@@ -10,7 +10,7 @@ $(document).ready(function () {
 		setTimeout(function () {
 			var key = e.keyCode;
 			var ls = document.getElementById("ls");
-			var input = $("#text").val();
+			var input = $("#text").val().trim();
 
 			if (key == 38 || key == 40) {
 				var list = document.getElementsByClassName("option");
@@ -49,20 +49,12 @@ $(document).ready(function () {
 				if (input != " ") {
 					for (var l in items) {
 						var item = items[l];
-						var substrs = createsubstrs(item);
-						for (var subst in substrs) {
-							var subst = substrs[subst];
-							if (subst != "") {
-								if (input == subst) {
-									if (a[a.length - 1] != item) {
-										a.push(item);
-									}
-								}
-							}
+						if (item.match(input)) {
+							a.push(item);
 						}
 					}
 				}
-				$("#ls").html(brek(a));
+				$("#ls").html(builditem(a));
 				where = -1;
 			}
 
@@ -89,20 +81,12 @@ $(document).ready(function () {
 			if (input != " ") {
 				for (var l in items) {
 					var item = items[l];
-					var substrs = createsubstrs(item);
-					for (var subst in substrs) {
-						var subst = substrs[subst];
-						if (subst != "") {
-							if (input == subst) {
-								if (a[a.length - 1] != item) {
-									a.push(item);
-								}
-							}
-						}
+					if (item.match(input)) {
+						a.push(item);
 					}
 				}
 			}
-			$("#ls").html(brek(a));
+			$("#ls").html(builditem(a));
 			where = -1;
 		}
 
@@ -117,29 +101,11 @@ $(document).ready(function () {
 		}
 	});
 
-	function createsubstrs(item) {
-		var len = item.length;
-		var ar = [];
-		var i = 0;
-		while (i <= len) {
-			var l = 0;
-			while (l <= len) {
-				if (i < l) {
-					ar.push(item.slice(i, l));
-				}
-				l++;
-			}
-			i++;
-		}
-		ar.sort();
-		return ar;
-	}
-
-	function brek(array) {
-		var newarray = [];
+	function builditem(array) {
+		var items = [];
 		for (var l in array) {
-			newarray.push("<div class='option'>" + array[l] + "</div>");
+			items.push("<div class='option'>" + array[l] + "</div>");
 		}
-		return newarray;
+		return items;
 	}
 });
